@@ -1,0 +1,17 @@
+{
+  "Name": "iw-qa-travel on demo / iwinoto@au1.ibm.com",
+  "ServiceId": "com.ibm.cloudoe.orion.client.deploy",
+  "Params": {
+    "Target": {
+      "Url": "https://api.ng.bluemix.net",
+      "Org": "iwinoto@au1.ibm.com",
+      "Space": "demo"
+    },
+    "Name": "iw-qa-travel",
+    "Timeout": 60
+  },
+  "Url": "http://iw-qa-travel-demo.mybluemix.net",
+  "ManageUrl": "https://ace.ng.bluemix.net#/resources/appGuid=0147211d-be33-40f3-811c-716d7b8fc6df&orgGuid=6b08bf7f-79f2-42c2-ba26-56d92c274098&spaceGuid=787860f3-9074-4a09-aee1-eb573b5b6f06",
+  "Path": "views/layout.jade",
+  "Type": "Cloud Foundry"
+}
