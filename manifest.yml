@@ -1,0 +1,12 @@
+---
+applications:
+- name : iw-qa-travel
+  mem : 256M
+  instances : 1
+  host : iw-qa-travel-dev
+  domain : mybluemix.net
+  path : ./
+  command : npm start
+  
+services:
+- Travel-QAAPI-iw
