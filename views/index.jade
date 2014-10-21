@@ -35,16 +35,33 @@ block row-content
           //- check if there are answers
           if answers.question.evidencelist && answers.question.evidencelist.length > 0
             div.form-group.row
-              div.col-lg-10 
+              div.col-lg-6 
                h3 Answer
               div.col-lg-2 
                h3 Confidence
+              div.col-lg-4 
+               h3 Feedback
             each answer, index in answers.question.answers
+              form#qaForm.form-horizontal(action="/feedback", method="post")
+                fieldset
+                  input(type = 'hidden', value = answer.id, name = 'answerId')
+                  input(type = 'hidden', value = answers.question.id, name = 'questionId')
+                  input(type = 'hidden', value = index, name = 'feedbackIndex')
+                  input(type = 'hidden', value = service, name = 'ServiceGroup')
+                  input(type = 'hidden', value = questionText, name = 'questionText')
                 div.form-group.row
-                  div.col-lg-10
+                  div.col-lg-6 
                     p #{answers.question.evidencelist[answer.id].text}
                   div.col-lg-2
                     p(style='text-align:center;') #{Math.round(answer.confidence*100) + '%'}
+                  div.col-lg-2
+                    select(name="feedback")
+                      option(value="0", selected=feedback[index].feedback == "0") no feedback
+                      option(value="-1", selected=feedback[index].feedback == "-1") not relevant
+                      option(value="9", selected=feedback[index].feedback == "9") partially relevant
+                      option(value="1", selected=feedback[index].feedback == "1") relevant
+                  div.col-lg-2
+                    button.btn.btn-block(type='submit') Send feedback
           else
             div.col-lg-12 No answers for that question, try with another question
       if error
