@@ -6,14 +6,16 @@ block row-content
     div.col-lg-12
         h2 Try the service
         div.well
-          form#qaForm.form-horizontal(method='post')
+          form#qaForm.form-horizontal(action='/', method='post')
             fieldset
               div.form-group.row
                 div.col-lg-3
-                  input#healthService(type="radio", name="ServiceGroup", value="healthcare", checked)
+                  input#healthService(type="radio", name="ServiceGroup", value="healthcare",
+                    checked=service == "healthcare")
                   |  Ask Health service
                 div.col-lg-3
-                  input#travelService(type="radio", name="ServiceGroup", value="travel")
+                  input#travelService(type="radio", name="ServiceGroup", value="travel",
+                    checked=service == "travel")
                   |  Ask Travel service
               div.form-group.row
                 div.col-lg-10
@@ -45,6 +47,8 @@ block row-content
                   input(type = 'hidden', value = answer.id, name = 'answerId')
                   input(type = 'hidden', value = answers.question.id, name = 'questionId')
                   input(type = 'hidden', value = index, name = 'feedbackIndex')
+                  input(type = 'hidden', value = service, name = 'ServiceGroup')
+                  input(type = 'hidden', value = questionText, name = 'questionText')
                 div.form-group.row
                   div.col-lg-6 
                     p #{answers.question.evidencelist[answer.id].text}
@@ -52,7 +56,6 @@ block row-content
                     p(style='text-align:center;') #{Math.round(answer.confidence*100) + '%'}
                   div.col-lg-2
                     select(name="feedback")
-                      -console.log("[Jade INF]", feedback[index]);
                       option(value="0", selected=feedback[index].feedback == "0") no feedback
                       option(value="-1", selected=feedback[index].feedback == "-1") not relevant
                       option(value="9", selected=feedback[index].feedback == "9") partially relevant

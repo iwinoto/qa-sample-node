@@ -61,17 +61,18 @@ var auth = "Basic " + new Buffer(service_username + ":" + service_password).toSt
 
 // render index page
 app.get('/', function(req, res){
-    res.render('index');
+    res.render('index', {'service': (!req.body.ServiceGroup ? 'healthcare' : req.body.ServiceGroup)});
 });
 
 // Handle the form POST containing the question to ask Watson and reply with the answer
 app.post('/', function(req, res){
+  var watsonService = (!req.body.ServiceGroup ? 'healthcare' : req.body.ServiceGroup);
   
   // Set the service endpoint (healthcare or travel)
   //var parts = url.parse(service_url +'/v1/question/healthcare');
   //var parts = url.parse(service_url +'/v1/question/travel');
   console.log("INF", "Requested service = " + req.body.ServiceGroup);
-  var parts = url.parse(service_url +'/v1/question/' + req.body.ServiceGroup);
+  var parts = url.parse(service_url +'/v1/question/' + watsonService);
   
   // create the request options to POST our question to Watson
   var options = { host: parts.hostname,
@@ -97,9 +98,11 @@ app.post('/', function(req, res){
     result.on('end', function() {
       var answers_pipeline = JSON.parse(response_string);
       answers = answers_pipeline[0];
+      /*
       console.log("[INF]", "Watson answers = " + util.inspect(answers_pipeline[0]));
       console.log("[INF]", "Answers: " + util.inspect(answers.question.answers));
       console.log("[INF]", "EvidenceList: " + util.inspect(answers.question.evidencelist));
+      */
       feedback = new Array(answers.length);
       answers.question.answers.forEach(function(answer, index){
         feedback[index] = {
@@ -109,7 +112,12 @@ app.post('/', function(req, res){
             comment : ""
         };
       });
-      return res.render('index',{'questionText': req.body.questionText, 'answers': answers, 'feedback': feedback})
+      return res.render('index',
+        {
+          'questionText': req.body.questionText,
+          'answers': answers,
+          'feedback': feedback,
+          'service': watsonService})
     })
 
   });
@@ -135,6 +143,7 @@ app.post('/', function(req, res){
 });
 
 app.post('/feedback', function(req, res){
+  var watsonService = (!req.body.ServiceGroup ? 'healthcare' : req.body.ServiceGroup);
   // create the request options to POST our question to Watson
   var parts = url.parse(service_url+'/v1/feedback');
   var options = {
@@ -158,12 +167,15 @@ app.post('/feedback', function(req, res){
   };
   */
   
-  console.log("[INF]", "Sending feedback index: " + req.body.feedbackIndex +
-      "\n" + util.inspect(feedback));
   if (feedback[req.body.feedbackIndex].feedback == req.body.feedback){
     console.log("[WARN]", "Requested feedback is same as current feedback.\n" +
         "Not sending feedback.");
-    return res.render('index',{'questionText': req.body.questionText, 'answers': answers, 'feedback': feedback});
+    return res.render('index',
+      {
+        'questionText': req.body.questionText,
+        'answers': answers,
+        'feedback': feedback,
+        'service': watsonService});
   };
   
   feedback[req.body.feedbackIndex].feedback = req.body.feedback;
@@ -180,7 +192,12 @@ app.post('/feedback', function(req, res){
       console.log("[INF]", "Feedback request end");
       console.log("[INF]", "Feedback response: " + response_string);
       console.log("[INF]", "Sending feedback: \n" + util.inspect(feedback));
-      return res.render('index',{'questionText': req.body.questionText, 'answers': answers, 'feedback': feedback});
+      return res.render('index',
+        {
+          'questionText': req.body.questionText,
+          'answers': answers,
+          'feedback': feedback,
+          'service': watsonService});
     });
 
     feedback_req.on('error', function(e) {
