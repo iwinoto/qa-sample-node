@@ -18,8 +18,8 @@ app.use(app.router);
 
 app.use(express.static(__dirname + '/public')); //setup static public directory
 app.set('view engine', 'jade');
-app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
-//app.set('views', __dirname + '/views/feedback'); //optional since express defaults to CWD/views
+//app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
+app.set('views', __dirname + '/views/feedback'); //optional since express defaults to CWD/views
 
 // There are many useful environment variables available in process.env.
 // VCAP_APPLICATION contains useful information about a deployed application.
