@@ -211,7 +211,7 @@ module.exports = function(grunt) {
   grunt.log.writeln('hostname = ' + hostname);
   grunt.log.writeln('default route = ' + route);
   grunt.log.writeln('env.dev.TEST_ROUTE = ', grunt.config('env.dev.TEST_ROUTE'));
-  var manifest = grunt.file.readYAML('manifest-base.yml');
+  var manifest = grunt.file.readYAML('manifest.yml');
   var pkg = grunt.config.get('pkg');
   grunt.log.writeln('Getting route for ' + hostname);
   manifest.applications.forEach(function(app){
@@ -237,19 +237,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   
   grunt.registerTask('create_services',
-	      'Deploy the application to a CF target from IBM DevOps Services (IDS).\n' +
-	      'Target information, including credentials, is configured in IDS pipeline configuration UI.\n' +
-	      'All we do is create services from information in cf-services.json.\n',
-	      ['env:dev', 'shell:login', 'shell:create_services']);
+          'Deploy the application to a CF target from IBM DevOps Services (IDS).\n' +
+          'Target information, including credentials, is configured in IDS pipeline configuration UI.\n' +
+          'All we do is create services from information in cf-services.json.\n',
+          ['env:dev', 'shell:login', 'shell:create_services']);
   grunt.registerTask('deploy',
       'Deploy the application to a CF target.\n' +
       'Set up targets in cf-targets.json and services in cf-services.json.\n' +
       'Pass in a target key using the --cf-target=<target key> option. Defaults to "public-dev".\n' +
       'Set CF userID and password in environment variables CF_USER and CF_PASSWD.',
       ['env:dev', 'shell:login', 'create_services', 'shell:push']);
-  grunt.registerTask('full', ['clean','jshint', 'env:unit_test', 'nodeunit', 'qunit', 'concat', 'uglify', 'copy:main']);
-  grunt.registerTask('default', ['clean', 'jshint', 'env:unit_test', 'nodeunit', 'concat', 'uglify', 'copy:main']);
-  grunt.registerTask('debug', ['clean', 'jshint', 'nodeunit', 'concat', 'copy:debug']);
-  grunt.registerTask('test', ['jshint', 'nodeunit']);
-  grunt.registerTask('notest', ['clean', 'jshint', 'concat', 'uglify', 'copy:main']);
+  grunt.registerTask('default', ['jshint', 'deploy']);
 };
