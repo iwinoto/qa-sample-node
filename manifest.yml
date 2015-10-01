@@ -4,7 +4,9 @@ applications:
   mem : 256M
   instances : 1
   host : iw-qa-travel-dev
-  domain : mybluemix.net
+  domains :
+  - mybluemix.net
+  - e1.apps
   path : .
   command : npm start
   
