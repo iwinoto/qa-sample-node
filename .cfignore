@@ -1,6 +1,9 @@
 node_modules/
 target/
 test/
-.jazzignore
 .project
 .gitignore
+launchConfigurations/
+project.json
+npm-debug.log
+.git/
