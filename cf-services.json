@@ -1,5 +1,5 @@
 {
-  "ravel-QAAPI-iw": {
+  "Travel-QAAPI-iw": {
     "type": "question_and_answer",
     "plan": "question_and_answer_free_plan"
   }
