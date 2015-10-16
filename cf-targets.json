@@ -22,5 +22,11 @@
     "target": "api.ng.bluemix.net",
     "space": "prod",
     "organisation": "iwinoto@au1.ibm.com"
+  },
+  "public-eu-gb-dev": {
+    "prefix": "iw",
+    "target": "api.eu-gb.bluemix.net",
+    "space": "dev",
+    "organisation": "iwinoto@au1.ibm.com"
   }
 }

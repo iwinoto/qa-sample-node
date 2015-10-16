@@ -172,14 +172,13 @@ module.exports = function(grunt) {
       push: {
         command: function() {
           // Application hostname
-          var hostname = grunt.config.get('hostname');
+          //var hostname = grunt.config.get('hostname');
           var dist_dir = grunt.config('dist');
           var app_name = grunt.config('pkg.name');
           var cmd = ['cd ' + dist_dir,
-                'cf push ' + app_name + ' -n ' + hostname];
+                'cf push ' + app_name];
           grunt.log.writeln('Push to Bluemix with\n' +
               '\t app: ' + app_name + '\n' +
-              '\t hostname: ' + hostname + '\n' +
               '\t with command: ' + cmd);
           return cmd.join('&&');
         }
@@ -192,7 +191,7 @@ module.exports = function(grunt) {
           var cmd = [];
           Object.keys(services).forEach(function(key) {
             var service = services[key];
-            cmd.push('cf create-service ' + service.type + ' ' + service.plan + ' ' + key);
+            cmd.push('cf create-service ' + service.type + ' ' + service.plan + ' \"' + key + '\"');
             grunt.log.writeln('Creating service\n' +
               '\t name: ' + key + '\n' +
               '\t type: ' + services[key].type + '\n' +
@@ -240,12 +239,12 @@ module.exports = function(grunt) {
           'Deploy the application to a CF target from IBM DevOps Services (IDS).\n' +
           'Target information, including credentials, is configured in IDS pipeline configuration UI.\n' +
           'All we do is create services from information in cf-services.json.\n',
-          ['env:dev', 'shell:login', 'shell:create_services']);
+          ['env:dev', 'shell:create_services']);
   grunt.registerTask('deploy',
       'Deploy the application to a CF target.\n' +
       'Set up targets in cf-targets.json and services in cf-services.json.\n' +
       'Pass in a target key using the --cf-target=<target key> option. Defaults to "public-dev".\n' +
       'Set CF userID and password in environment variables CF_USER and CF_PASSWD.',
-      ['env:dev', 'shell:login', 'create_services', 'shell:push']);
+      ['env:dev', 'create_services', 'shell:push']);
   grunt.registerTask('default', ['jshint', 'deploy']);
 };

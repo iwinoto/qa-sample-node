@@ -4,11 +4,8 @@ applications:
   mem : 256M
   instances : 1
   host : iw-qa-travel-dev
-  domains :
-  - mybluemix.net
-  - e1.apps
   path : .
   command : npm start
   
 services:
-- Travel-QAAPI-iw
+- QAAPI
